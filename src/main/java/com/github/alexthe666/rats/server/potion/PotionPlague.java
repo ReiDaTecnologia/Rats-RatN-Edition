@@ -22,6 +22,15 @@ public class PotionPlague extends Potion {
     }
 
     public void performEffect(@Nonnull EntityLivingBase entityLivingBaseIn, int amplifier) {
+
+        if (amplifier == 2) {
+            if (entityLivingBaseIn.ticksExisted % 200 == 0) {
+                entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, 2F);
+            }
+        }
+        else if (amplifier > 2) {
+            entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, 1F);
+        }
     }
 
     public boolean isReady(int duration, int amplifier) {

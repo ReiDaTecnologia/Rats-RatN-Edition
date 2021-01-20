@@ -293,9 +293,14 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onLivingHeal(LivingHealEvent event) {
-        if (event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION) != null) {
-            PotionEffect effect = event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION);
-            event.setCanceled(true);
+        PotionEffect plague = event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION);
+        if (plague != null) {
+            if (plague.getAmplifier() == 0) {
+                event.setAmount(event.getAmount() / 2F);
+            }
+            else if (plague.getAmplifier() > 0) {
+                event.setCanceled(true);
+            }
         }
     }
 

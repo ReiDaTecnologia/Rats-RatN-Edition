@@ -26,7 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -43,9 +42,9 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.List;
-import java.util.Random;
 
 @Mod(modid = RatsMod.MODID, name = RatsMod.NAME, dependencies = "required-after:llibrary@[" + RatsMod.LLIBRARY_VERSION + ",)", version = RatsMod.VERSION, guiFactory = "com.github.alexthe666.rats.client.gui.RatsGuiFactory")
 public class RatsMod {
@@ -78,6 +77,7 @@ public class RatsMod {
     public static RatConfig CONFIG_OPTIONS = new RatConfig();
     public static boolean iafLoaded;
     public static DamageSource ratTrapDamage;
+    public static DamageSource plagueDamage;
 
     public static void loadConfig() {
         File configFile = new File(Loader.instance().getConfigDir(), "rats.cfg");
@@ -124,10 +124,26 @@ public class RatsMod {
         RatsWorldRegistry.register();
         RatsVillageRegistry.register();
         ratTrapDamage = new DamageSource("rat_trap_damage") {
+            @Nonnull
             @Override
-            public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
+            public ITextComponent getDeathMessage(@Nonnull EntityLivingBase entityLivingBaseIn) {
                 String s = "death.rat_trap_damage";
                 return new TextComponentTranslation(s, entityLivingBaseIn.getDisplayName());
+            }
+        };
+        plagueDamage = new DamageSource("rat_plague") {
+            @Override
+            public boolean isUnblockable()
+            {
+                return true;
+            }
+
+            @Nonnull
+            @Override
+            public ITextComponent getDeathMessage(@Nonnull EntityLivingBase entityLivingBaseIn)
+            {
+                String key = "death.rat_plague_damage";
+                return new TextComponentTranslation(key, entityLivingBaseIn.getDisplayName());
             }
         };
     }
