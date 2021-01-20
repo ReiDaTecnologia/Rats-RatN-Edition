@@ -33,38 +33,36 @@ minecraft {
 
 repositories {
     mavenCentral()
- maven {
-    url = "http://maven.mcmoddev.com"
-  }
-  maven {
-    name = "Mobius Repo"
-    url = "http://tehnut.info/maven"
-  }
-  maven {
-    name = "JEI"
-    url = "http://dvs1.progwml6.com/files/maven"
-  }
-  maven {
-        name "Jared"
-        url "http://maven.blamejared.com/"
-  }
-  maven {
-    name = "gegy1000"
-    url = "https://maven.gegy1000.net"
-  }
     maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven"
+        url = "http://maven.mcmoddev.com"
+    }
+
+    maven {
+        name = "Mobius Repo"
+        url = "http://tehnut.info/maven"
     }
     maven {
-            name = 'DVS1 Maven FS'
-        url = 'http://dvs1.progwml6.com/files/maven'
+    name = "JEI"
+    url = "http://dvs1.progwml6.com/files/maven"
+    }
+
+    maven {
+        name "Jared"
+        url "http://maven.blamejared.com/"
+    }
+    maven {
+        name = "gegy1000"
+        url = "https://maven.gegy1000.net"
     }
 
     maven {
         url = "https://minecraft.curseforge.com/api/maven/"
     }
+
+    maven {
+        url "https://www.cursemaven.com"
+    }
+
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
@@ -73,7 +71,9 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "net.ilexiconn:llibrary:1.7.9-1.12.2"
+    deobfCompile "curse.maven:llibrary-243298:2504999"
+    //maven.mcmoddev.com is dead so I'm implementing cursemaven.com as a fallback
+    //deobfCompile "net.ilexiconn:llibrary:1.7.9-1.12.2"
     deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.1.21"
     deobfCompile "slimeknights:TConstruct:1.12.2-2.9.1.70"
     runtime "mezz.jei:jei_1.12.2:4.9.1.181"

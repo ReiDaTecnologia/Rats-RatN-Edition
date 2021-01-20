@@ -11,6 +11,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class PotionPlague extends Potion {
@@ -20,27 +21,28 @@ public class PotionPlague extends Potion {
         this.setRegistryName(RatsMod.MODID, "plague");
     }
 
-    public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier) {
+    public void performEffect(@Nonnull EntityLivingBase entityLivingBaseIn, int amplifier) {
     }
 
     public boolean isReady(int duration, int amplifier) {
         return duration > 0;
     }
 
+    @Nonnull
     public String getName() {
         return "rats.plague";
     }
 
 
     @SideOnly(Side.CLIENT)
-    public void renderInventoryEffect(int x, int y, PotionEffect effect, net.minecraft.client.Minecraft mc) {
+    public void renderInventoryEffect(int x, int y, @Nonnull PotionEffect effect, net.minecraft.client.Minecraft mc) {
         mc.getTextureManager().bindTexture(PotionConfitByaldi.TEXTURE);
         this.drawTexturedModalRect(x + 6, y + 7, 18, 0, 18, 18);
     }
 
 
     @SideOnly(Side.CLIENT)
-    public void renderHUDEffect(int x, int y, PotionEffect effect, net.minecraft.client.Minecraft mc, float alpha) {
+    public void renderHUDEffect(int x, int y, @Nonnull PotionEffect effect, net.minecraft.client.Minecraft mc, float alpha) {
         mc.getTextureManager().bindTexture(PotionConfitByaldi.TEXTURE);
         this.drawTexturedModalRect(x + 3, y + 3, 18, 0, 18, 18);
 
@@ -58,6 +60,7 @@ public class PotionPlague extends Potion {
         tessellator.draw();
     }
 
+    @Nonnull
     public java.util.List<ItemStack> getCurativeItems() {
         return new ArrayList<>();
     }
