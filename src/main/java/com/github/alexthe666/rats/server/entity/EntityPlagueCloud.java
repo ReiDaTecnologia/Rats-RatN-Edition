@@ -30,8 +30,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
+@ParametersAreNonnullByDefault
 public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
 
     protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityPlagueCloud.class, DataSerializers.OPTIONAL_UNIQUE_ID);
@@ -129,7 +131,7 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
         if (flag && entityIn instanceof EntityLivingBase) {
-            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600, 0));
+            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000, 0));
         }
         return flag;
     }

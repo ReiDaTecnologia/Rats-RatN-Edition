@@ -17,6 +17,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class EntityPlagueShot extends EntityArrow {
 
     public EntityPlagueShot(World worldIn) {
@@ -75,16 +77,17 @@ public class EntityPlagueShot extends EntityArrow {
     }
 
 
-    public void playSound(SoundEvent soundIn, float volume, float pitch) {
+    public void playSound(@Nonnull SoundEvent soundIn, float volume, float pitch) {
         if (!this.isSilent() && soundIn != SoundEvents.ENTITY_ARROW_HIT && soundIn != SoundEvents.ENTITY_ARROW_HIT_PLAYER) {
             this.world.playSound(null, this.posX, this.posY, this.posZ, soundIn, this.getSoundCategory(), volume, pitch);
         }
     }
 
-    protected void arrowHit(EntityLivingBase living) {
+    protected void arrowHit(@Nonnull EntityLivingBase living) {
         super.arrowHit(living);
-        if (living != null && (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity))){
-            living.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 1200));
+        if (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity)){
+            //15 minutes of plague (to allow the player to go through the first level of plague [18000])
+            living.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000, 0));
 
             if (living instanceof EntityPlayer) {
                 this.damageShield((EntityPlayer) living, (float) this.getDamage());

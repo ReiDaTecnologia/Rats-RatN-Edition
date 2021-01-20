@@ -11,7 +11,6 @@ import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.audio.Sound;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,7 +28,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -45,6 +43,7 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -197,9 +196,10 @@ public class ServerEvents {
                 }
             }
         }
-        if(event.getEntityPlayer().isPotionActive(RatsMod.PLAGUE_POTION) && RatsMod.CONFIG_OPTIONS.plagueSpread && !(event.getTarget() instanceof EntityRat)){
+        PotionEffect plague = event.getEntityPlayer().getActivePotionEffect(RatsMod.PLAGUE_POTION);
+        if(plague != null && RatsMod.CONFIG_OPTIONS.plagueSpread && !(event.getTarget() instanceof EntityRat)){
             if(event.getTarget() instanceof EntityLivingBase && !((EntityLivingBase) event.getTarget()).isPotionActive(RatsMod.PLAGUE_POTION)){
-                ((EntityLivingBase) event.getTarget()).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+                ((EntityLivingBase) event.getTarget()).addPotionEffect(plague);
                 event.getTarget().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
             }
         }
@@ -209,9 +209,10 @@ public class ServerEvents {
     public void onHitEntity(LivingAttackEvent event) {
         if(event.getSource().getImmediateSource() instanceof EntityLivingBase && RatsMod.CONFIG_OPTIONS.plagueSpread){
             EntityLivingBase attacker = (EntityLivingBase)event.getSource().getImmediateSource();
-            if(attacker.isPotionActive(RatsMod.PLAGUE_POTION) && !(event.getEntityLiving() instanceof EntityRat)){
+            PotionEffect plague = attacker.getActivePotionEffect(RatsMod.PLAGUE_POTION);
+            if(plague != null && !(event.getEntityLiving() instanceof EntityRat)){
                 if(!event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION)){
-                    event.getEntityLiving().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+                    event.getEntityLiving().addPotionEffect(plague);
                     event.getEntityLiving().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
                 }
             }
@@ -347,6 +348,39 @@ public class ServerEvents {
                             event.getEntityLiving().posZ + (double) (rand.nextFloat() * event.getEntityLiving().width * 2F) - (double) event.getEntityLiving().width,
                             motionX, 0.0F, motionZ);
                 }
+            }
+        }
+
+        EntityLivingBase entity = event.getEntityLiving();
+        if (!entity.world.isRemote) {
+            PotionEffect plague = entity.getActivePotionEffect(RatsMod.PLAGUE_POTION);
+            if (plague != null) {
+                if (entity.getEntityData().getInteger("plague_level") == 0) {
+                    entity.getEntityData().setInteger("plague_level", plague.getAmplifier() + 1);
+                    entity.getEntityData().setLong("plague_infected_time", entity.world.getTotalWorldTime());
+                }
+
+                //If the entity was infected for 10 mins or more increase plague level
+                if (entity.world.getTotalWorldTime() - entity.getEntityData().getLong("plague_infected_time") >= 12000 && entity.getEntityData().getInteger("plague_level") < 4) {
+                    int amp = entity.getEntityData().getInteger("plague_level");
+                    entity.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000, amp));
+                    entity.getEntityData().setLong("plague_infected_time", entity.world.getTotalWorldTime());
+                    entity.getEntityData().setInteger("plague_level", amp + 1);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerCloned(PlayerEvent.Clone event) {
+        if (event.isWasDeath()) {
+            PotionEffect plague = event.getOriginal().getActivePotionEffect(RatsMod.PLAGUE_POTION);
+            //if the player is plagued and the last damage source wasn't plagueDamage (which would mean the player was killed by the plague)
+            if (plague != null && event.getOriginal().getLastDamageSource() != RatsMod.plagueDamage) {
+                event.getEntityPlayer().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), plague.getAmplifier()));
+            }
+            else if (plague != null && plague.getAmplifier() > 2) {
+                // TODO: 20/01/2021 Lower the player max health by a %
             }
         }
     }

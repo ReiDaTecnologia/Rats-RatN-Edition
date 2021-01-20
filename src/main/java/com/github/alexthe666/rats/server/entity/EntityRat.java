@@ -846,11 +846,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (flag) {
             this.applyEnchantments(this, entityIn);
             if (this.hasPlague() && entityIn instanceof EntityLivingBase && rollForPlague((EntityLivingBase) entityIn)) {
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000));
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE)) {
                 entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 5F);
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600));
+                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000));
                 ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 600));
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT)) {
@@ -1753,7 +1753,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 ((EntityRat) entityIn).setPlague(true);
             } else if (entityIn instanceof EntityLivingBase && rollForPlague((EntityLivingBase) entityIn)) {
                 if (((EntityLivingBase) entityIn).getActivePotionEffect(RatsMod.PLAGUE_POTION) != null) {
-                    ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+                    ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000, 0));
                 }
             }
         }

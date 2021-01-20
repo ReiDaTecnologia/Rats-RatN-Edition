@@ -101,7 +101,8 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
     }
 
     public boolean doExtraEffect(EntityLivingBase target) {
-        target.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 1200, 0));
+        //15 minutes of plague (to allow the player to go through the first level of plague [18000])
+        target.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000, 0));
         return true;
     }
 

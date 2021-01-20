@@ -19,7 +19,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
 
@@ -31,6 +33,7 @@ public class ItemGenericFood extends ItemFood {
         this.setRegistryName(RatsMod.MODID, name);
     }
 
+    @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
         if (this == RatsItemRegistry.CONFIT_BYALDI || this == RatsItemRegistry.POTATO_KNISHES) {
             if (entityLiving instanceof EntityPlayer) {
@@ -52,6 +55,7 @@ public class ItemGenericFood extends ItemFood {
         }
     }
 
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         if (this == RatsItemRegistry.CONFIT_BYALDI || this == RatsItemRegistry.POTATO_KNISHES) {
             ItemStack itemstack = playerIn.getHeldItem(handIn);
@@ -62,11 +66,12 @@ public class ItemGenericFood extends ItemFood {
         }
     }
 
+    @Override
     protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
         if (!worldIn.isRemote && this == RatsItemRegistry.CONTAMINATED_FOOD) {
             Random rand = new Random();
             if (rand.nextFloat() < 0.3D) {
-                player.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 2400));
+                player.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000));
             }
             if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(MobEffects.POISON, 2400));
@@ -93,6 +98,7 @@ public class ItemGenericFood extends ItemFood {
         }
     }
 
+    @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (this == RatsItemRegistry.RAT_BURGER) {
             tooltip.add(I18n.format("item.rats.rat_burger.desc"));

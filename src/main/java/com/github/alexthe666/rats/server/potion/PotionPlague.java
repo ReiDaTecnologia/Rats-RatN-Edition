@@ -22,10 +22,9 @@ public class PotionPlague extends Potion {
     }
 
     public void performEffect(@Nonnull EntityLivingBase entityLivingBaseIn, int amplifier) {
-
         if (amplifier == 2) {
-            if (entityLivingBaseIn.ticksExisted % 200 == 0) {
-                entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, 2F);
+            if (entityLivingBaseIn.ticksExisted % 1200 == 0) {
+                entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, 1F);
             }
         }
         else if (amplifier > 2) {
@@ -42,13 +41,11 @@ public class PotionPlague extends Potion {
         return "rats.plague";
     }
 
-
     @SideOnly(Side.CLIENT)
     public void renderInventoryEffect(int x, int y, @Nonnull PotionEffect effect, net.minecraft.client.Minecraft mc) {
         mc.getTextureManager().bindTexture(PotionConfitByaldi.TEXTURE);
         this.drawTexturedModalRect(x + 6, y + 7, 18, 0, 18, 18);
     }
-
 
     @SideOnly(Side.CLIENT)
     public void renderHUDEffect(int x, int y, @Nonnull PotionEffect effect, net.minecraft.client.Minecraft mc, float alpha) {
