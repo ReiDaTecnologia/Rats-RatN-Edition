@@ -15,6 +15,6 @@ public class TraitDisease extends AbstractTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
-        target.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000, 0));
+        target.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, RatsMod.CONFIG_OPTIONS.plagueEffectDuration * 20, 0));
     }
 }

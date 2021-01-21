@@ -71,7 +71,7 @@ public class ItemGenericFood extends ItemFood {
         if (!worldIn.isRemote && this == RatsItemRegistry.CONTAMINATED_FOOD) {
             Random rand = new Random();
             if (rand.nextFloat() < 0.3D) {
-                player.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000));
+                player.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, RatsMod.CONFIG_OPTIONS.plagueEffectDuration * 20));
             }
             if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(MobEffects.POISON, 2400));

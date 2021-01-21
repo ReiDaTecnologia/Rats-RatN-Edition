@@ -84,7 +84,7 @@ public class RatsMod {
     public static DamageSource ratTrapDamage;
     public static DamageSource plagueDamage;
     public static final UUID PLAGUE_MAX_HEALTH_MODIFIER_UUID = UUID.fromString("CB3F55D3-645C-4F38-A497-0000033DB5CF");
-    public static final AttributeModifier PLAGUE_MAX_HEALTH_MODIFIER = new AttributeModifier(PLAGUE_MAX_HEALTH_MODIFIER_UUID, "Rats Plague Max health debuff", -4, 0);
+    public static final AttributeModifier PLAGUE_MAX_HEALTH_MODIFIER = new AttributeModifier(PLAGUE_MAX_HEALTH_MODIFIER_UUID, "Rats Plague Max health debuff", -CONFIG_OPTIONS.plagueMaxHealthDebuff, 0);
 
     public static void loadConfig() {
         File configFile = new File(Loader.instance().getConfigDir(), "rats.cfg");

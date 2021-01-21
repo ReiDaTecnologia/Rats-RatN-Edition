@@ -303,7 +303,7 @@ public class ServerEvents {
         PotionEffect plague = event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION);
         if (plague != null) {
             if (plague.getAmplifier() == 0) {
-                event.setAmount(event.getAmount() / 2F);
+                event.setAmount(event.getAmount() * RatsMod.CONFIG_OPTIONS.plagueStage1HealingDebuff);
             }
             else if (plague.getAmplifier() > 0) {
                 event.setCanceled(true);
@@ -357,6 +357,7 @@ public class ServerEvents {
             }
         }
 
+        //Plague Section --------
         EntityLivingBase entity = event.getEntityLiving();
         if (!entity.world.isRemote) {
             PotionEffect plague = entity.getActivePotionEffect(RatsMod.PLAGUE_POTION);
@@ -367,9 +368,9 @@ public class ServerEvents {
                 }
 
                 //If the entity was infected for 10 mins or more increase plague level
-                if (entity.world.getTotalWorldTime() - entity.getEntityData().getLong("plague_infected_time") >= 12000 && entity.getEntityData().getInteger("plague_level") < 4) {
+                if (entity.world.getTotalWorldTime() - entity.getEntityData().getLong("plague_infected_time") >= RatsMod.CONFIG_OPTIONS.plagueStageDuration * 20L && entity.getEntityData().getInteger("plague_level") < 4) {
                     int amp = entity.getEntityData().getInteger("plague_level");
-                    entity.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000, amp));
+                    entity.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, RatsMod.CONFIG_OPTIONS.plagueEffectDuration * 20, amp));
                     entity.getEntityData().setLong("plague_infected_time", entity.world.getTotalWorldTime());
                     entity.getEntityData().setInteger("plague_level", amp + 1);
                 }
@@ -403,7 +404,7 @@ public class ServerEvents {
                 else if (plague.getAmplifier() > 2) {
                     //The player was killed by the plague on level IV (decrease max plague level)
                     if (healthMod != null) {
-                        healthMod = new AttributeModifier(PLAGUE_MAX_HEALTH_MODIFIER_UUID, "Rats Plague Max health debuff", -4 + healthMod.getAmount(), 0);
+                        healthMod = new AttributeModifier(PLAGUE_MAX_HEALTH_MODIFIER_UUID, "Rats Plague Max health debuff", -RatsMod.CONFIG_OPTIONS.plagueMaxHealthDebuff + healthMod.getAmount(), 0);
                     }
                     else {
                         healthMod = RatsMod.PLAGUE_MAX_HEALTH_MODIFIER;
@@ -422,7 +423,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onItemUseFinish(LivingEntityUseItemEvent.Finish event) {
-        if (event.getItem().getItem() == RatsItemRegistry.POTATO_KNISHES) {
+        if (event.getItem().getItem().getRegistryName().toString().equals(RatsMod.CONFIG_OPTIONS.plagueRestoreHealthItem)) {
             Multimap<String, AttributeModifier> modMap = ArrayListMultimap.create();
             modMap.put(SharedMonsterAttributes.MAX_HEALTH.getName(), RatsMod.PLAGUE_MAX_HEALTH_MODIFIER);
             event.getEntityLiving().getAttributeMap().removeAttributeModifiers(modMap);

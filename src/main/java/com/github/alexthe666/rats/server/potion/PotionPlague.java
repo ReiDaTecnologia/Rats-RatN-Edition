@@ -23,12 +23,12 @@ public class PotionPlague extends Potion {
 
     public void performEffect(@Nonnull EntityLivingBase entityLivingBaseIn, int amplifier) {
         if (amplifier == 2) {
-            if (entityLivingBaseIn.ticksExisted % 1200 == 0) {
-                entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, 1F);
+            if (entityLivingBaseIn.ticksExisted % (RatsMod.CONFIG_OPTIONS.plagueStage3DamageFrequency * 20) == 0) {
+                entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, RatsMod.CONFIG_OPTIONS.plagueStage3Damage);
             }
         }
         else if (amplifier > 2) {
-            entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, 1F);
+            entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, RatsMod.CONFIG_OPTIONS.plagueStage4Damage);
         }
     }
 

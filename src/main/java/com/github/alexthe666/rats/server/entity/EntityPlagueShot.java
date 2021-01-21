@@ -87,7 +87,7 @@ public class EntityPlagueShot extends EntityArrow {
         super.arrowHit(living);
         if (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity)){
             //15 minutes of plague (to allow the player to go through the first level of plague [18000])
-            living.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 18000, 0));
+            living.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, RatsMod.CONFIG_OPTIONS.plagueEffectDuration * 20, 0));
 
             if (living instanceof EntityPlayer) {
                 this.damageShield((EntityPlayer) living, (float) this.getDamage());
