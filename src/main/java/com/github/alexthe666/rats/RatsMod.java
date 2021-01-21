@@ -54,7 +54,7 @@ import java.util.UUID;
 @Mod(modid = RatsMod.MODID, name = RatsMod.NAME, dependencies = "required-after:llibrary@[" + RatsMod.LLIBRARY_VERSION + ",)", version = RatsMod.VERSION, guiFactory = "com.github.alexthe666.rats.client.gui.RatsGuiFactory")
 public class RatsMod {
     public static final String MODID = "rats";
-    public static final String NAME = "Rats";
+    public static final String NAME = "Rats: Rebirth of the Plague";
     public static final String VERSION = "3.2.14";
     public static final String LLIBRARY_VERSION = "1.7.9";
     public static CreativeTabs TAB = new CreativeTabs(MODID) {
