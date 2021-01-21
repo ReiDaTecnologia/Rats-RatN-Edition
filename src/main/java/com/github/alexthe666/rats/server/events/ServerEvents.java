@@ -8,13 +8,17 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
 import com.github.alexthe666.rats.server.message.MessageSwingArm;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -58,6 +62,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static com.github.alexthe666.rats.RatsMod.PLAGUE_MAX_HEALTH_MODIFIER_UUID;
 
 @Mod.EventBusSubscriber
 public class ServerEvents {
@@ -372,16 +378,54 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public void onPlayerDeath(LivingDeathEvent event) {
+        if (event.getEntityLiving() instanceof EntityPlayer) {
+            if (event.getSource() == RatsMod.plagueDamage) {
+                event.getEntityLiving().getEntityData().setBoolean("was_plagued", true);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onPlayerCloned(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
+
+            AttributeModifier healthMod = event.getOriginal().getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getModifier(PLAGUE_MAX_HEALTH_MODIFIER_UUID);
+            Multimap<String, AttributeModifier> modMap = ArrayListMultimap.create();
+
             PotionEffect plague = event.getOriginal().getActivePotionEffect(RatsMod.PLAGUE_POTION);
-            //if the player is plagued and the last damage source wasn't plagueDamage (which would mean the player was killed by the plague)
-            if (plague != null && event.getOriginal().getLastDamageSource() != RatsMod.plagueDamage) {
-                event.getEntityPlayer().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), plague.getAmplifier()));
+            if (plague != null) {
+                //The player wasn't killed by the plague (keep it after death)
+                if (!event.getOriginal().getEntityData().getBoolean("was_plagued")) {
+                    event.getEntityPlayer().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), plague.getAmplifier()));
+                    //System.out.println("Ho ridato la plaga");
+                }
+                else if (plague.getAmplifier() > 2) {
+                    //The player was killed by the plague on level IV (decrease max plague level)
+                    if (healthMod != null) {
+                        healthMod = new AttributeModifier(PLAGUE_MAX_HEALTH_MODIFIER_UUID, "Rats Plague Max health debuff", -4 + healthMod.getAmount(), 0);
+                    }
+                    else {
+                        healthMod = RatsMod.PLAGUE_MAX_HEALTH_MODIFIER;
+                    }
+
+                    modMap.put(SharedMonsterAttributes.MAX_HEALTH.getName(), healthMod);
+                    //System.out.println("Ho diminuito la vita");
+                }
             }
-            else if (plague != null && plague.getAmplifier() > 2) {
-                // TODO: 20/01/2021 Lower the player max health by a %
-            }
+
+            if (healthMod != null)
+                modMap.put(SharedMonsterAttributes.MAX_HEALTH.getName(), healthMod);
+            event.getEntityPlayer().getAttributeMap().applyAttributeModifiers(modMap);
+        }
+    }
+
+    @SubscribeEvent
+    public void onItemUseFinish(LivingEntityUseItemEvent.Finish event) {
+        if (event.getItem().getItem() == RatsItemRegistry.POTATO_KNISHES) {
+            Multimap<String, AttributeModifier> modMap = ArrayListMultimap.create();
+            modMap.put(SharedMonsterAttributes.MAX_HEALTH.getName(), RatsMod.PLAGUE_MAX_HEALTH_MODIFIER);
+            event.getEntityLiving().getAttributeMap().removeAttributeModifiers(modMap);
         }
     }
 

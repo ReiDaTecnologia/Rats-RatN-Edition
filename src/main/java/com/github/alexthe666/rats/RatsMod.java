@@ -18,10 +18,14 @@ import com.github.alexthe666.rats.server.potion.PotionPlague;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import net.ilexiconn.llibrary.server.network.NetworkWrapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
@@ -45,6 +49,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 @Mod(modid = RatsMod.MODID, name = RatsMod.NAME, dependencies = "required-after:llibrary@[" + RatsMod.LLIBRARY_VERSION + ",)", version = RatsMod.VERSION, guiFactory = "com.github.alexthe666.rats.client.gui.RatsGuiFactory")
 public class RatsMod {
@@ -78,6 +83,8 @@ public class RatsMod {
     public static boolean iafLoaded;
     public static DamageSource ratTrapDamage;
     public static DamageSource plagueDamage;
+    public static final UUID PLAGUE_MAX_HEALTH_MODIFIER_UUID = UUID.fromString("CB3F55D3-645C-4F38-A497-0000033DB5CF");
+    public static final AttributeModifier PLAGUE_MAX_HEALTH_MODIFIER = new AttributeModifier(PLAGUE_MAX_HEALTH_MODIFIER_UUID, "Rats Plague Max health debuff", -4, 0);
 
     public static void loadConfig() {
         File configFile = new File(Loader.instance().getConfigDir(), "rats.cfg");
