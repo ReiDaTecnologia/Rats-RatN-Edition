@@ -67,7 +67,7 @@ public class RatConfig {
     public int plagueStage3DamageFrequency = 60;
     public float plagueStage3Damage = 1F;
     public float plagueStage4Damage = 1F;
-    public float plagueMaxHealthDebuff = 2F;
+    public float plagueMaxHealthDebuff = 4F;
     public String plagueRestoreHealthItem = "rats:potato_kinishes";
     public int plagueEffectDuration = 900;
     public int plagueStageDuration = 600;
@@ -137,7 +137,7 @@ public class RatConfig {
         this.plagueStage3DamageFrequency = config.getInt("Plague: Stage 3 Damage Frequency (seconds)", "rebirth_of_the_plague", 60, 1, Integer.MAX_VALUE / 20, "Time in seconds to wait before the player is damaged by Plague, Stage 3");
         this.plagueStage3Damage = config.getFloat("Plague: Stage 3 Damage (half-hearts)", "rebirth_of_the_plague", 1F, 0, Float.MAX_VALUE, "Damage in half hearts units a Plague, Stage 3 effect should deal to an entity");
         this.plagueStage4Damage = config.getFloat("Plague: Stage 4 Damage (half-hearts)", "rebirth_of_the_plague", 1F, 0, Float.MAX_VALUE, "Damage in half hearts units a Plauge, Stage 4 effect should deal to an entity");
-        this.plagueMaxHealthDebuff = config.getFloat("Plague: Max Health Debuff (half-hearts)", "rebirth_of_the_plague", 2F, 0, Float.MAX_VALUE, "Health points the player should lose after dying to Plague, Stage 4 effect");
+        this.plagueMaxHealthDebuff = config.getFloat("Plague: Max Health Debuff (half-hearts)", "rebirth_of_the_plague", 4F, 0, Float.MAX_VALUE, "Health points the player should lose after dying to Plague, Stage 4 effect");
         this.plagueRestoreHealthItem = config.getString("Max Health Restore Item", "rebirth_of_the_plague", "rats:potato_kinishes", "The registry name of the item that restores the player health to the original amount.");
         this.plagueEffectDuration = config.getInt("Plague Effect Duration (seconds)", "rebirth_of_the_plague", 900, 1, Integer.MAX_VALUE / 20, "Time in seconds the Plague effect should last for (should always be higher than the stage duration otherwise stage progression will not work)");
         this.plagueStageDuration = config.getInt("Plague Effect Stage Duration (seconds)", "rebirth_of_the_plague", 600, 1, Integer.MAX_VALUE / 20, "Time in seconds that should pass for a Plague effect to progress to the next stage");
