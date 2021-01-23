@@ -397,11 +397,7 @@ public class ServerEvents {
             PotionEffect plague = event.getOriginal().getActivePotionEffect(RatsMod.PLAGUE_POTION);
             if (plague != null) {
                 //The player wasn't killed by the plague (keep it after death)
-                if (!event.getOriginal().getEntityData().getBoolean("was_plagued")) {
-                    event.getEntityPlayer().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), plague.getAmplifier()));
-                    //System.out.println("Ho ridato la plaga");
-                }
-                else if (plague.getAmplifier() > 2) {
+                if (plague.getAmplifier() > 2 && event.getOriginal().getEntityData().getBoolean("was_plagued")) {
                     //The player was killed by the plague on level IV (decrease max plague level)
                     if (healthMod != null) {
                         healthMod = new AttributeModifier(PLAGUE_MAX_HEALTH_MODIFIER_UUID, "Rats Plague Max health debuff", -RatsMod.CONFIG_OPTIONS.plagueMaxHealthDebuff + healthMod.getAmount(), 0);
@@ -412,6 +408,10 @@ public class ServerEvents {
 
                     modMap.put(SharedMonsterAttributes.MAX_HEALTH.getName(), healthMod);
                     //System.out.println("Ho diminuito la vita");
+                }
+                else {
+                    event.getEntityPlayer().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), plague.getAmplifier()));
+                    //System.out.println("Ho ridato la plaga");
                 }
             }
 
