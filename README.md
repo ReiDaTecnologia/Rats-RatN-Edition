@@ -1,7 +1,7 @@
 <div style="text-align: center;">
 Join our Discord for support<br>
 
-![[RotN Discord](https://discord.gg/rotn)](https://img.shields.io/discord/620840315498004480?label=Discord&logo=Discord)
+[![shield](https://img.shields.io/discord/620840315498004480?label=Discord&logo=Discord)](https://discord.gg/rotn)
 </div>
 
 **RatN** is a fork of **[alex1the1666's Rats](https://github.com/Alex-the-666/Rats)** for 1.12.2, made for the **[Rebirth of the Night](https://www.curseforge.com/minecraft/modpacks/rebirth-of-the-night)** modpack. 
