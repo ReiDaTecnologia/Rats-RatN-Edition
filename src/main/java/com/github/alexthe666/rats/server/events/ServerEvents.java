@@ -409,10 +409,15 @@ public class ServerEvents {
                     modMap.put(SharedMonsterAttributes.MAX_HEALTH.getName(), healthMod);
                     //System.out.println("Ho diminuito la vita");
                 }
-                else {
+                else if (RatsMod.CONFIG_OPTIONS.plagueRespawnStage == -1) {
+                    //Config option is set to dynamically assign new plague stage based on the old one
                     event.getEntityPlayer().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), plague.getAmplifier()));
-                    //System.out.println("Ho ridato la plaga");
                 }
+                else if (RatsMod.CONFIG_OPTIONS.plagueRespawnStage > 0) {
+                    //Config option is set to assign a specific stage of plague after dying
+                    event.getEntityPlayer().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), RatsMod.CONFIG_OPTIONS.plagueRespawnStage - 1));
+                }
+                //if plagueRespawnStage is exactly == 0 --> plague effect is not restored after death
             }
 
             if (healthMod != null)

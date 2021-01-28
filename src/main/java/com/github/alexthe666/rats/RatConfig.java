@@ -71,6 +71,7 @@ public class RatConfig {
     public String plagueRestoreHealthItem = "rats:potato_kinishes";
     public int plagueEffectDuration = 900;
     public int plagueStageDuration = 600;
+    public int plagueRespawnStage = -1;
 
     public void init(Configuration config) {
         this.customMainMenu = config.getBoolean("Custom Main Menu", "all", true, "True if rats has a custom main menu");
@@ -141,5 +142,6 @@ public class RatConfig {
         this.plagueRestoreHealthItem = config.getString("Max Health Restore Item", "rebirth_of_the_plague", "rats:potato_kinishes", "The registry name of the item that restores the player health to the original amount.");
         this.plagueEffectDuration = config.getInt("Plague Effect Duration (seconds)", "rebirth_of_the_plague", 900, 1, Integer.MAX_VALUE / 20, "Time in seconds the Plague effect should last for (should always be higher than the stage duration otherwise stage progression will not work)");
         this.plagueStageDuration = config.getInt("Plague Effect Stage Duration (seconds)", "rebirth_of_the_plague", 600, 1, Integer.MAX_VALUE / 20, "Time in seconds that should pass for a Plague effect to progress to the next stage");
+        this.plagueRespawnStage = config.getInt("Plague Effect Respawn Stage", "rebirth_of_the_plague", -1, -1, 4, "The stage the player should respawn with after dying of plague during a non-final plague stage\n0 means plague effect won't be reassigned\n-1 (default) means dynamic, same as the previous plague stage");
     }
 }
