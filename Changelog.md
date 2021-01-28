@@ -1,5 +1,12 @@
 ## This Changelog Follows the Semantic Versions system
 
+### 3.2.17
+- You can now configure which plague stage the player will get after they respawn
+    - New available options are:
+        - Assign the same plague level the player had before dying (old behaviour) {default}
+        - No plague effect reassigned at all
+        - Always assign a certain level of plague effect
+
 ### 3.2.16
 - Fixed a logic flaw that caused the plague effect to finish on Stage 3 if the player died during it
 - Max health debuff now defaults to 4 health points (2 hearts for each death)
