@@ -212,20 +212,6 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onHitEntity(LivingAttackEvent event) {
-        if(event.getSource().getImmediateSource() instanceof EntityLivingBase && RatsMod.CONFIG_OPTIONS.plagueSpread){
-            EntityLivingBase attacker = (EntityLivingBase)event.getSource().getImmediateSource();
-            PotionEffect plague = attacker.getActivePotionEffect(RatsMod.PLAGUE_POTION);
-            if(plague != null && !(event.getEntityLiving() instanceof EntityRat)){
-                if(!event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION)){
-                    event.getEntityLiving().addPotionEffect(plague);
-                    event.getEntityLiving().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void onPlayerPunch(AttackEntityEvent event) {
         ItemStack itemstack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
         TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack);
@@ -332,6 +318,18 @@ public class ServerEvents {
                     }
                 }
 
+            }
+        }
+
+        //Plague spreading between infected entities
+        if(event.getSource().getImmediateSource() instanceof EntityLivingBase && RatsMod.CONFIG_OPTIONS.plagueSpread){
+            EntityLivingBase attacker = (EntityLivingBase)event.getSource().getImmediateSource();
+            PotionEffect plague = attacker.getActivePotionEffect(RatsMod.PLAGUE_POTION);
+            if(plague != null && !(event.getEntityLiving() instanceof EntityRat)){
+                if(!event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION)){
+                    event.getEntityLiving().addPotionEffect(plague);
+                    event.getEntityLiving().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
+                }
             }
         }
     }
