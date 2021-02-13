@@ -632,4 +632,15 @@ item.banner.rat_and_crossbones.green=Green Rat and Crossbones
 item.banner.rat_and_crossbones.red=Red Rat and Crossbones
 item.banner.rat_and_crossbones.black=Black Rat and Crossbones
 death.rat_trap_damage=%s was crushed by a rattrap
+
+# Rebirth of the Plague
 death.rat_plague_damage=%s died of plague
+subtitle.rats.rat_idle=Rat Squeaks
+subtitle.rats.rat_hurt=Rat Hurts
+subtitle.rats.rat_dies=Rat Dies
+subtitle.rats.rat_dig=Rat Digs
+subtitle.rats.rat_plague=Rat Breathes and Wheezes
+subtitle.rats.rat_flute=Rat Flute Sounds
+subtitle.rats.ratlantean_spirit_idle=Ratlantean Spirit Sounds
+subtitle.rats.ratlantean_spirit_die=Ratlantean Spirit Dies
+subtitle.rats.ratlantean_spirit_hurt=Ratlantean Spirit Hurts

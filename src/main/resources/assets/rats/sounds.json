@@ -127,14 +127,16 @@
     "category": "neutral",
     "sounds": [
       "rats:ratlantean_spirit_die_0"
-    ]
+    ],
+    "subtitle": "subtitle.rats.ratlantean_spirit_hurt"
   },
   "ratlantean_spirit_hurt": {
     "category": "neutral",
     "sounds": [
       "rats:ratlantean_spirit_hurt_0",
       "rats:ratlantean_spirit_hurt_1"
-    ]
+    ],
+    "subtitle": "subtitle.rats.ratlantean_spirit_hurt"
   },
   "ratlantean_spirit_idle": {
     "category": "neutral",
@@ -142,7 +144,8 @@
       "rats:ratlantean_spirit_idle_0",
       "rats:ratlantean_spirit_idle_1",
       "rats:ratlantean_spirit_idle_2"
-    ]
+    ],
+    "subtitle": "subtitle.rats.ratlantean_spirit_idle"
   },
   "piper_loop" : {
     "category": "neutral",
@@ -156,7 +159,8 @@
       "rats:flute_0",
       "rats:flute_1",
       "rats:flute_3"
-    ]
+    ],
+    "subtitle": "subtitle.rats.rat_flute"
   },
   "rat_flute": {
     "category": "neutral",
@@ -165,7 +169,8 @@
       "rats:flute_1",
       "rats:flute_2",
       "rats:flute_3"
-    ]
+    ],
+    "subtitle": "subtitle.rats.rat_flute"
   },
   "rat_dig": {
     "category": "neutral",
@@ -173,7 +178,8 @@
       "rats:rat_dig_0",
       "rats:rat_dig_1",
       "rats:rat_dig_2"
-    ]
+    ],
+    "subtitle": "subtitle.rats.rat_dig"
   },
   "rat_plague": {
     "category": "neutral",
@@ -181,15 +187,16 @@
       "rats:rat_plague_0",
       "rats:rat_plague_1",
       "rats:rat_plague_2"
-
-    ]
+    ],
+    "subtitle": "subtitle.rats.rat_plague"
   },
   "rat_die": {
     "category": "neutral",
     "sounds": [
       "rats:rat_die_0",
       "rats:rat_die_1"
-    ]
+    ],
+    "subtitle": "subtitle.rats.rat_dies"
   },
   "rat_hurt": {
     "category": "neutral",
@@ -197,7 +204,8 @@
       "rats:rat_hurt_0",
       "rats:rat_hurt_1",
       "rats:rat_hurt_2"
-    ]
+    ],
+    "subtitle": "subtitle.rats.rat_hurt"
   },
   "rat_idle": {
     "category": "neutral",
@@ -205,7 +213,8 @@
       "rats:rat_idle_0",
       "rats:rat_idle_1",
       "rats:rat_idle_2"
-    ]
+    ],
+    "subtitle": "subtitle.rats.rat_idle"
   },
   "potion_effect_begin": {
     "category": "neutral",
