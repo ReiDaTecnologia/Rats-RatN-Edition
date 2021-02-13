@@ -55,7 +55,7 @@ import java.util.UUID;
 public class RatsMod {
     public static final String MODID = "rats";
     public static final String NAME = "Rats: Rebirth of the Plague";
-    public static final String VERSION = "3.2.17";
+    public static final String VERSION = "3.2.18";
     public static final String LLIBRARY_VERSION = "1.7.9";
     public static CreativeTabs TAB = new CreativeTabs(MODID) {
         @Override

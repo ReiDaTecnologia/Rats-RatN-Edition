@@ -1,5 +1,9 @@
 ## This Changelog Follows the Semantic Versions system
 
+### 3.2.18
+- Plague effect can't infect enemies through shields anymore
+- Added some subtitles to rat sounds
+
 ### 3.2.17
 - You can now configure which plague stage the player will get after they respawn
     - New available options are:
