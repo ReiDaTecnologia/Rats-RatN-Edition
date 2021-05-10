@@ -1,9 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.advancements.PlagueDoctorTrigger;
-import com.github.alexthe666.rats.server.advancements.RatCageDecoTrigger;
-import com.github.alexthe666.rats.server.blocks.BlockRatCageDecorated;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAIFollowGolem;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAILookAtTradePlayer;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAITradePlayer;
@@ -11,13 +8,11 @@ import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAIVillagerInterac
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import com.google.common.collect.Sets;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -48,6 +43,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
 
@@ -656,18 +652,21 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
 
     }
 
-    public void onStruckByLightning(EntityLightningBolt lightningBolt) {
+    @Override
+    public void onStruckByLightning(@Nonnull EntityLightningBolt lightningBolt) {
         if (!this.world.isRemote && !this.isDead) {
-            EntityBlackDeath entitywitch = new EntityBlackDeath(this.world);
-            entitywitch.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            entitywitch.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entitywitch)), null);
-            entitywitch.setNoAI(this.isAIDisabled());
-            if (this.hasCustomName()) {
-                entitywitch.setCustomNameTag(this.getCustomNameTag());
-                entitywitch.setAlwaysRenderNameTag(this.getAlwaysRenderNameTag());
+            if (RatsMod.CONFIG_OPTIONS.convertPlagueDoctorToBlackDeath) {
+                EntityBlackDeath entitywitch = new EntityBlackDeath(this.world);
+                entitywitch.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+                entitywitch.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entitywitch)), null);
+                entitywitch.setNoAI(this.isAIDisabled());
+                if (this.hasCustomName()) {
+                    entitywitch.setCustomNameTag(this.getCustomNameTag());
+                    entitywitch.setAlwaysRenderNameTag(this.getAlwaysRenderNameTag());
+                }
+                this.world.spawnEntity(entitywitch);
+                this.setDead();
             }
-            this.world.spawnEntity(entitywitch);
-            this.setDead();
         }
     }
 }
