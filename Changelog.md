@@ -1,5 +1,8 @@
 ## This Changelog Follows the Semantic Versions system
 
+### 3.2.19
+- Added Config option to turn off plague doctor trasnformation when struck by a lightning
+
 ### 3.2.18
 - Plague effect can't infect enemies through shields anymore
 - Added some subtitles to rat sounds
