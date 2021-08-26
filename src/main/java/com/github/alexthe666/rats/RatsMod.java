@@ -18,13 +18,10 @@ import com.github.alexthe666.rats.server.potion.PotionPlague;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import net.ilexiconn.llibrary.server.network.NetworkWrapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -51,19 +48,21 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-@Mod(modid = RatsMod.MODID, name = RatsMod.NAME, dependencies = "required-after:llibrary@[" + RatsMod.LLIBRARY_VERSION + ",)", version = RatsMod.VERSION, guiFactory = "com.github.alexthe666.rats.client.gui.RatsGuiFactory")
+@Mod(modid = RatsMod.MODID, name = RatsMod.NAME, dependencies = "required:llibrary@[" + RatsMod.LLIBRARY_VERSION + ",)", version = RatsMod.VERSION, guiFactory = "com.github.alexthe666.rats.client.gui.RatsGuiFactory")
 public class RatsMod {
     public static final String MODID = "rats";
     public static final String NAME = "Rats: Rebirth of the Plague";
     public static final String VERSION = "3.2.19";
     public static final String LLIBRARY_VERSION = "1.7.9";
     public static CreativeTabs TAB = new CreativeTabs(MODID) {
+        @Nonnull
         @Override
         public ItemStack createIcon() {
             return new ItemStack(RatsItemRegistry.CHEESE);
         }
     };
     public static CreativeTabs TAB_UPGRADES = new CreativeTabs("rats.upgrades") {
+        @Nonnull
         @Override
         public ItemStack createIcon() {
             return new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC);
@@ -90,6 +89,7 @@ public class RatsMod {
         File configFile = new File(Loader.instance().getConfigDir(), "rats.cfg");
         if (!configFile.exists()) {
             try {
+                //noinspection ResultOfMethodCallIgnored
                 configFile.createNewFile();
             } catch (Exception e) {
                 logger.warn("Could not create a new Rats config file.");
@@ -163,7 +163,7 @@ public class RatsMod {
         if (RatsMod.CONFIG_OPTIONS.spawnRats) {
             for (Biome biome : Biome.REGISTRY) {
                 if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
-                    if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
+                    if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                         List<Biome.SpawnListEntry> spawnList = RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters ? biome.getSpawnableList(EnumCreatureType.MONSTER) : biome.getSpawnableList(EnumCreatureType.CREATURE);
                         spawnList.add(new Biome.SpawnListEntry(EntityRat.class, RatsMod.CONFIG_OPTIONS.ratSpawnRate, 1, 3));
                     }
