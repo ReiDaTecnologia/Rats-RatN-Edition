@@ -19,6 +19,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -54,6 +55,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @ParametersAreNonnullByDefault
@@ -316,27 +319,22 @@ public class ClientProxy extends CommonProxy {
         return Minecraft.getMinecraft().currentScreen == null || !(Minecraft.getMinecraft().currentScreen instanceof GuiRat) && !(Minecraft.getMinecraft().currentScreen instanceof GuiCheeseStaff);
     }
 
+    private static final List<ModelBiped> ratsHatModels = new ArrayList<>(9);
+    static {
+        ratsHatModels.add(new ModelChefToque(1.0F));
+        ratsHatModels.add(new ModelPiperHat(1.0F));
+        ratsHatModels.add(new ModelPiratHat(1.0F));
+        ratsHatModels.add(new ModelArcheologistHat(1.0F));
+        ratsHatModels.add(new ModelFarmerHat(1.0F));
+        ratsHatModels.add(new ModelPlagueDoctorMask(1.0F));
+        ratsHatModels.add(new ModelRatFez(1.0F));
+        ratsHatModels.add(new ModelTopHat(1.0F));
+        ratsHatModels.add(new ModelSantaHat(1.0F));
+    }
+
     @SideOnly(Side.CLIENT)
     public Object getArmorModel(int index) {
-        if (index == 0) {
-            return new ModelChefToque(1.0F);
-        } else if (index == 1) {
-            return new ModelPiperHat(1.0F);
-        } else if (index == 2) {
-            return new ModelPiratHat(1.0F);
-        } else if (index == 3) {
-            return new ModelArcheologistHat(1.0F);
-        } else if (index == 4){
-            return new ModelFarmerHat(1.0F);
-       } else if (index == 5){
-            return new ModelPlagueDoctorMask(1.0F);
-        } else if (index == 6) {
-            return new ModelRatFez(1.0F);
-        } else if (index == 7) {
-            return new ModelTopHat(1.0F);
-        }else {
-            return new ModelSantaHat(1.0F);
-        }
+        return ratsHatModels.get(index);
     }
 
     @SideOnly(Side.CLIENT)
