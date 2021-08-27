@@ -2,7 +2,6 @@
 
 ### 3.2.20
 - Hopefully Fixed Memory Leak on Rat Hats models ([#1](https://github.com/Rebirth-of-the-Night/Rats-RatN-Edition/issues/1))
-- Updated requirements string format
 
 ### 3.2.19
 - Added Config option to turn off plague doctor trasnformation when struck by a lightning
