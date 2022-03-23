@@ -32,6 +32,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -205,7 +206,7 @@ public class ServerEvents {
         PotionEffect plague = event.getEntityPlayer().getActivePotionEffect(RatsMod.PLAGUE_POTION);
         if(plague != null && RatsMod.CONFIG_OPTIONS.plagueSpread && !(event.getTarget() instanceof EntityRat)){
             if(event.getTarget() instanceof EntityLivingBase && !((EntityLivingBase) event.getTarget()).isPotionActive(RatsMod.PLAGUE_POTION)){
-                ((EntityLivingBase) event.getTarget()).addPotionEffect(plague);
+                ((EntityLivingBase) event.getTarget()).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, RatsMod.CONFIG_OPTIONS.plagueEffectDuration * 20));
                 event.getTarget().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
             }
         }
@@ -327,7 +328,7 @@ public class ServerEvents {
             PotionEffect plague = attacker.getActivePotionEffect(RatsMod.PLAGUE_POTION);
             if(plague != null && !(event.getEntityLiving() instanceof EntityRat)){
                 if(!event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION)){
-                    event.getEntityLiving().addPotionEffect(plague);
+                    event.getEntityLiving().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, RatsMod.CONFIG_OPTIONS.plagueEffectDuration * 20));
                     event.getEntityLiving().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
                 }
             }
@@ -359,19 +360,32 @@ public class ServerEvents {
         EntityLivingBase entity = event.getEntityLiving();
         if (!entity.world.isRemote) {
             PotionEffect plague = entity.getActivePotionEffect(RatsMod.PLAGUE_POTION);
+            final NBTTagCompound data = entity.getEntityData();
             if (plague != null) {
-                if (entity.getEntityData().getInteger("plague_level") == 0) {
-                    entity.getEntityData().setInteger("plague_level", plague.getAmplifier() + 1);
-                    entity.getEntityData().setLong("plague_infected_time", entity.world.getTotalWorldTime());
+
+                if (data.getInteger("plague_level") == 0) {
+                    data.setInteger("plague_level", plague.getAmplifier() + 1);
+                    data.setLong("plague_infected_time", entity.world.getTotalWorldTime());
                 }
 
                 //If the entity was infected for 10 mins or more increase plague level
-                if (entity.world.getTotalWorldTime() - entity.getEntityData().getLong("plague_infected_time") >= RatsMod.CONFIG_OPTIONS.plagueStageDuration * 20L && entity.getEntityData().getInteger("plague_level") < 4) {
-                    int amp = entity.getEntityData().getInteger("plague_level");
+                if (entity.world.getTotalWorldTime() - data.getLong("plague_infected_time") >= RatsMod.CONFIG_OPTIONS.plagueStageDuration * 20L && data.getInteger("plague_level") < 4) {
+                    int amp = data.getInteger("plague_level");
                     entity.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, RatsMod.CONFIG_OPTIONS.plagueEffectDuration * 20, amp));
-                    entity.getEntityData().setLong("plague_infected_time", entity.world.getTotalWorldTime());
-                    entity.getEntityData().setInteger("plague_level", amp + 1);
+                    data.setLong("plague_infected_time", entity.world.getTotalWorldTime());
+                    data.setInteger("plague_level", amp + 1);
                 }
+            }
+            else {
+                if (data.getLong("plague_infected_time") < Long.MAX_VALUE)
+                    data.setLong("plague_infected_time", Long.MAX_VALUE);
+                if (data.getInteger("plague_level") > 0)
+                    data.setInteger("plague_level", 0);
+            }
+
+            if (entity.world.getTotalWorldTime() % 20 == 0) {
+                System.out.print("plague_level: " + data.getInteger("plague_level"));
+                System.out.print(" | plague_infected_time: " + data.getLong("plague_infected_time") + '\n');
             }
         }
     }
