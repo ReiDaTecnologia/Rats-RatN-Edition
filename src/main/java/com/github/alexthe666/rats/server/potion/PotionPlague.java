@@ -22,6 +22,7 @@ public class PotionPlague extends Potion {
         this.setRegistryName(RatsMod.MODID, "plague");
     }
 
+    @Override
     public void performEffect(@Nonnull EntityLivingBase entityLivingBaseIn, int amplifier) {
         if (entityLivingBaseIn instanceof EntityPlayer) {
             if (amplifier == 2) {
@@ -35,21 +36,25 @@ public class PotionPlague extends Potion {
         }
     }
 
+    @Override
     public boolean isReady(int duration, int amplifier) {
         return duration > 0;
     }
 
+    @Override
     @Nonnull
     public String getName() {
         return "rats.plague";
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void renderInventoryEffect(int x, int y, @Nonnull PotionEffect effect, net.minecraft.client.Minecraft mc) {
         mc.getTextureManager().bindTexture(PotionConfitByaldi.TEXTURE);
         this.drawTexturedModalRect(x + 6, y + 7, 18, 0, 18, 18);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void renderHUDEffect(int x, int y, @Nonnull PotionEffect effect, net.minecraft.client.Minecraft mc, float alpha) {
         mc.getTextureManager().bindTexture(PotionConfitByaldi.TEXTURE);
@@ -69,6 +74,7 @@ public class PotionPlague extends Potion {
         tessellator.draw();
     }
 
+    @Override
     @Nonnull
     public java.util.List<ItemStack> getCurativeItems() {
         return new ArrayList<>();
