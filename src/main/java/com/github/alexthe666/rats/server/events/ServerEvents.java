@@ -384,10 +384,10 @@ public class ServerEvents {
             }
 
             //Debug Prints
-            //if (entity.world.getTotalWorldTime() % 20 == 0) {
-            //    System.out.print("plague_level: " + data.getInteger("plague_level"));
-            //    System.out.print(" | plague_infected_time: " + data.getLong("plague_infected_time") + '\n');
-            //}
+            if (entity.world.getTotalWorldTime() % 20 == 0) {
+                System.out.print("plague_level: " + data.getInteger("plague_level"));
+                System.out.print(" | plague_infected_time: " + data.getLong("plague_infected_time") + '\n');
+            }
         }
     }
 
@@ -408,7 +408,11 @@ public class ServerEvents {
             Multimap<String, AttributeModifier> modMap = ArrayListMultimap.create();
 
             PotionEffect plague = event.getOriginal().getActivePotionEffect(RatsMod.PLAGUE_POTION);
+            final EntityPlayer rebornPlayer = event.getEntityPlayer();
             if (plague != null) {
+
+                //Copy plague infection timestamp from the dead player
+                rebornPlayer.getEntityData().setLong("plague_infected_time", event.getOriginal().getEntityData().getLong("plague_infected_time"));
                 //The player wasn't killed by the plague (keep it after death)
                 if (plague.getAmplifier() > 2 && event.getOriginal().getEntityData().getBoolean("was_plagued")) {
                     //The player was killed by the plague on level IV (decrease max plague level)
@@ -420,22 +424,23 @@ public class ServerEvents {
                     }
 
                     modMap.put(SharedMonsterAttributes.MAX_HEALTH.getName(), healthMod);
-                    //System.out.println("Ho diminuito la vita");
                 }
                 else if (RatsMod.CONFIG_OPTIONS.plagueRespawnStage == -1) {
                     //Config option is set to dynamically assign new plague stage based on the old one
-                    event.getEntityPlayer().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), plague.getAmplifier()));
+                    rebornPlayer.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), plague.getAmplifier()));
+                    rebornPlayer.getEntityData().setInteger("plague_level", plague.getAmplifier() + 1);
                 }
                 else if (RatsMod.CONFIG_OPTIONS.plagueRespawnStage > 0) {
                     //Config option is set to assign a specific stage of plague after dying
-                    event.getEntityPlayer().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), RatsMod.CONFIG_OPTIONS.plagueRespawnStage - 1));
+                    rebornPlayer.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, plague.getDuration(), RatsMod.CONFIG_OPTIONS.plagueRespawnStage - 1));
+                    rebornPlayer.getEntityData().setInteger("plague_level", RatsMod.CONFIG_OPTIONS.plagueRespawnStage);
                 }
                 //if plagueRespawnStage is exactly == 0 --> plague effect is not restored after death
             }
 
             if (healthMod != null)
                 modMap.put(SharedMonsterAttributes.MAX_HEALTH.getName(), healthMod);
-            event.getEntityPlayer().getAttributeMap().applyAttributeModifiers(modMap);
+            rebornPlayer.getAttributeMap().applyAttributeModifiers(modMap);
         }
     }
 
