@@ -1,5 +1,11 @@
 ## This Changelog Follows the Semantic Versions system
 
+### 3.2.21
+- Fixed plague attributes not being reset after the entity's healed (previously caused plague stage skipping)
+- Fixed plague stage being copied from the attacker entity (caused stage skipping)
+- Fixed plague timestamp being reset after death (caused players being stuck on stage 3 if they die before getting to stage 4)
+- Made sure only Player Entities are damaged by plague (to avoid random mob deaths due to the effect)
+
 ### 3.2.20
 - Hopefully Fixed Memory Leak on Rat Hats models ([#1](https://github.com/Rebirth-of-the-Night/Rats-RatN-Edition/issues/1))
 
