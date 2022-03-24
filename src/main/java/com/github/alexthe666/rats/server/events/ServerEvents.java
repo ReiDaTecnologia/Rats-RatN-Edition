@@ -384,10 +384,10 @@ public class ServerEvents {
             }
 
             //Debug Prints
-            if (entity.world.getTotalWorldTime() % 20 == 0) {
-                System.out.print("plague_level: " + data.getInteger("plague_level"));
-                System.out.print(" | plague_infected_time: " + data.getLong("plague_infected_time") + '\n');
-            }
+            //if (entity.world.getTotalWorldTime() % 20 == 0) {
+            //    System.out.print("plague_level: " + data.getInteger("plague_level"));
+            //    System.out.print(" | plague_infected_time: " + data.getLong("plague_infected_time") + '\n');
+            //}
         }
     }
 
