@@ -72,7 +72,9 @@ public class RatConfig {
     public int plagueEffectDuration = 900;
     public int plagueStageDuration = 600;
     public int plagueRespawnStage = -1;
-    public boolean convertPlagueDoctorToBlackDeath;
+    public boolean convertPlagueDoctorToBlackDeath = true;
+
+    public boolean contaminatedFoodRandomDebuffs = true;
 
     public void init(Configuration config) {
         this.customMainMenu = config.getBoolean("Custom Main Menu", "all", true, "True if rats has a custom main menu");
@@ -145,5 +147,6 @@ public class RatConfig {
         this.plagueStageDuration = config.getInt("Plague Effect Stage Duration (seconds)", "rebirth_of_the_plague", 600, 1, Integer.MAX_VALUE / 20, "Time in seconds that should pass for a Plague effect to progress to the next stage");
         this.plagueRespawnStage = config.getInt("Plague Effect Respawn Stage", "rebirth_of_the_plague", -1, -1, 4, "The stage the player should respawn with after dying of plague during a non-final plague stage\n0 means plague effect won't be reassigned\n-1 (default) means dynamic, same as the previous plague stage");
         this.convertPlagueDoctorToBlackDeath = config.getBoolean("Lightning Converts Plague Doctor", "rebirth_of_the_plague", true, "Whether a Plague Doctor should convert to Black Death when struck by a lightning");
+        this.contaminatedFoodRandomDebuffs = config.getBoolean("Contaminated Food Negative Debuffs", "rebirth_of_the_plague", true, "If set to true players eating contaminated food will get random negative effects [plague is one of the possible effects]");
     }
 }

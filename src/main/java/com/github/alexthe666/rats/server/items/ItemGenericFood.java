@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -25,6 +26,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ItemGenericFood extends ItemFood {
     public ItemGenericFood(int amount, float saturation, boolean isWolfFood, String name) {
         super(amount, saturation, isWolfFood);
@@ -60,7 +63,7 @@ public class ItemGenericFood extends ItemFood {
         if (this == RatsItemRegistry.CONFIT_BYALDI || this == RatsItemRegistry.POTATO_KNISHES) {
             ItemStack itemstack = playerIn.getHeldItem(handIn);
             playerIn.setActiveHand(handIn);
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
         } else {
             return super.onItemRightClick(worldIn, playerIn, handIn);
         }
@@ -68,7 +71,7 @@ public class ItemGenericFood extends ItemFood {
 
     @Override
     protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
-        if (!worldIn.isRemote && this == RatsItemRegistry.CONTAMINATED_FOOD) {
+        if (!worldIn.isRemote && this == RatsItemRegistry.CONTAMINATED_FOOD && RatsMod.CONFIG_OPTIONS.contaminatedFoodRandomDebuffs) {
             Random rand = new Random();
             if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, RatsMod.CONFIG_OPTIONS.plagueEffectDuration * 20));

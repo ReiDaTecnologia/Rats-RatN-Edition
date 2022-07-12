@@ -12,12 +12,15 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
+@ParametersAreNonnullByDefault
 public class ItemPlagueHealer extends ItemGenericFood {
 
-    private float healChance;
+    private final float healChance;
 
     public ItemPlagueHealer(int amount, float saturation, String name, float healChance) {
         super(amount, saturation, false, name);
@@ -32,6 +35,7 @@ public class ItemPlagueHealer extends ItemGenericFood {
         }
     }
 
+    @Nonnull
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
         if(stack.getItem() == RatsItemRegistry.PLAGUE_STEW) {
             super.onItemUseFinish(stack, worldIn, entityLiving);
@@ -41,10 +45,11 @@ public class ItemPlagueHealer extends ItemGenericFood {
         }
     }
 
+    @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         playerIn.setActiveHand(handIn);
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
