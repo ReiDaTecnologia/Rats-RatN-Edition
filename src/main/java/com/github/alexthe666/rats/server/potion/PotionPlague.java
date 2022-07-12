@@ -1,11 +1,11 @@
 package com.github.alexthe666.rats.server.potion;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.entity.RatUtils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -24,15 +24,18 @@ public class PotionPlague extends Potion {
 
     @Override
     public void performEffect(@Nonnull EntityLivingBase entityLivingBaseIn, int amplifier) {
-        if (entityLivingBaseIn instanceof EntityPlayer) {
-            if (amplifier == 2) {
-                if (entityLivingBaseIn.ticksExisted % (RatsMod.CONFIG_OPTIONS.plagueStage3DamageFrequency * 20) == 0) {
-                    entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, RatsMod.CONFIG_OPTIONS.plagueStage3Damage);
-                }
+
+        Class<? extends EntityLivingBase> klass = entityLivingBaseIn.getClass();
+        if (RatUtils.PLAGUE_IMMUNE_ENTITIES_CLASSES.contains(klass))
+            return;
+
+        if (amplifier == 2) {
+            if (entityLivingBaseIn.ticksExisted % (RatsMod.CONFIG_OPTIONS.plagueStage3DamageFrequency * 20) == 0) {
+                entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, RatsMod.CONFIG_OPTIONS.plagueStage3Damage);
             }
-            else if (amplifier > 2) {
-                entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, RatsMod.CONFIG_OPTIONS.plagueStage4Damage);
-            }
+        }
+        else if (amplifier > 2) {
+            entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, RatsMod.CONFIG_OPTIONS.plagueStage4Damage);
         }
     }
 
@@ -62,6 +65,7 @@ public class PotionPlague extends Potion {
 
     }
 
+    @SuppressWarnings("SameParameterValue")
     @SideOnly(Side.CLIENT)
     private void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
         Tessellator tessellator = Tessellator.getInstance();

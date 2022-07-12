@@ -73,8 +73,8 @@ public class RatConfig {
     public int plagueStageDuration = 600;
     public int plagueRespawnStage = -1;
     public boolean convertPlagueDoctorToBlackDeath = true;
-
     public boolean contaminatedFoodRandomDebuffs = true;
+    public String[] plagueImmuneEntities = new String[] {"rats:rat"};
 
     public void init(Configuration config) {
         this.customMainMenu = config.getBoolean("Custom Main Menu", "all", true, "True if rats has a custom main menu");
@@ -148,5 +148,6 @@ public class RatConfig {
         this.plagueRespawnStage = config.getInt("Plague Effect Respawn Stage", "rebirth_of_the_plague", -1, -1, 4, "The stage the player should respawn with after dying of plague during a non-final plague stage\n0 means plague effect won't be reassigned\n-1 (default) means dynamic, same as the previous plague stage");
         this.convertPlagueDoctorToBlackDeath = config.getBoolean("Lightning Converts Plague Doctor", "rebirth_of_the_plague", true, "Whether a Plague Doctor should convert to Black Death when struck by a lightning");
         this.contaminatedFoodRandomDebuffs = config.getBoolean("Contaminated Food Negative Debuffs", "rebirth_of_the_plague", true, "If set to true players eating contaminated food will get random negative effects [plague is one of the possible effects]");
+        this.plagueImmuneEntities = config.get("rebirth_of_the_plague", "Plague Immune Entity List", new String[] {"rats:rat"}, "List of entity types that are immune to the plague effect, which means they can have and spread plague but can't get damaged by it").getStringList();
     }
 }

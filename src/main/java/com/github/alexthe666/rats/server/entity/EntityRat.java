@@ -847,7 +847,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             this.applyEnchantments(this, entityIn);
             if (this.hasPlague() && entityIn instanceof EntityLivingBase && rollForPlague((EntityLivingBase) entityIn)) {
                 ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, RatsMod.CONFIG_OPTIONS.plagueEffectDuration * 20));
-                System.out.println("PLAGUED");
+                //System.out.println("PLAGUED");
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE)) {
                 entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 5F);
