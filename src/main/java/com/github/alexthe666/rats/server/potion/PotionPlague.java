@@ -28,7 +28,7 @@ public class PotionPlague extends Potion {
 
         for (Class<? extends Entity> entClass : RatUtils.PLAGUE_IMMUNE_ENTITIES_CLASSES)
         {
-            if (entClass.isInstance(entityLivingBaseIn))
+            if (entClass != null && entClass.isInstance(entityLivingBaseIn))
                 return;
         }
 
