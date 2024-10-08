@@ -3,15 +3,11 @@ buildscript {
     mavenCentral()
     maven {
       name = "forge"
-      url = "http://files.minecraftforge.net/maven"
+      url = "https://maven.minecraftforge.net"
     }
     maven {
       name = "sonatype"
       url = "https://oss.sonatype.org/content/repositories/snapshots/"
-    }
-    maven {
-      name = "CurseForge"
-      url = "https://minecraft.curseforge.com/api/maven/"
     }
   }
   dependencies {
@@ -34,35 +30,20 @@ minecraft {
 repositories {
     mavenCentral()
     maven {
-        url = "http://maven.mcmoddev.com"
-    }
-
-    maven {
-        name = "Mobius Repo"
-        url = "http://tehnut.info/maven"
+        name = "JEI"
+        url = "http://dvs1.progwml6.com/files/maven"
     }
     maven {
-    name = "JEI"
-    url = "http://dvs1.progwml6.com/files/maven"
+        name = "CurseMaven"
+        url = "https://cursemaven.com"
     }
-
     maven {
         name "Jared"
         url "http://maven.blamejared.com/"
     }
     maven {
-        name = "gegy1000"
-        url = "https://maven.gegy1000.net"
-    }
-
-    maven {
         url = "https://minecraft.curseforge.com/api/maven/"
     }
-
-    maven {
-        url "https://www.cursemaven.com"
-    }
-
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
