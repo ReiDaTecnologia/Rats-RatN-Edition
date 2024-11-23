@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nullable;
@@ -26,6 +27,9 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
     protected boolean mustUpdate;
     protected EntityItem targetEntity;
     private EntityRat rat;
+    private int stuckTimer;
+    private int stuckTimeOut;
+    private Vec3d prevPositionVector;
 
     public RatAITargetItems(EntityRat creature, boolean checkSight) {
         this(creature, checkSight, false);
@@ -82,6 +86,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             Collections.sort(list, this.theNearestAttackableTargetSorter);
             this.targetEntity = list.get(0);
             this.mustUpdate = false;
+            prevPositionVector = this.rat.getPositionVector();
             return true;
         }
     }
@@ -108,6 +113,21 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
         if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
             this.resetTask();
             this.taskOwner.getNavigator().clearPath();
+        }
+        stuckTimer++;
+        if (stuckTimer >= 7) // Check if the rat is stuck roughly every second
+        {
+            if (prevPositionVector.distanceTo(this.rat.getPositionVector()) < 1) // Even when the rat is jumping up blocks it shouldn't return a number lower than 1 meaning the rat is probably stuck
+                stuckTimeOut++; // 60 seconds (one minute) to avoid exploitation
+            else
+                stuckTimeOut = 0; // The rat need to be continuously stuck for 60 seconds
+            prevPositionVector = this.rat.getPositionVector(); // Save the previous second's position vector to be compared with the current later. For some reason prevPos and lastTickPos have the same value as the current location so i had to save the previous location myself
+            stuckTimer = 0; // Reset the stuck timer
+        }
+        if (stuckTimeOut >= 60) // If the rat is stuck for 60 seconds
+        {
+            this.targetEntity.setPosition(this.rat.posX, this.rat.posY, this.rat.posZ); // Tp the item to the rat's position
+            stuckTimeOut = 0; // Reset the time out timer back to 0
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1 && shouldKeepGathering()) {
             EntityRat rat = (EntityRat) this.taskOwner;
