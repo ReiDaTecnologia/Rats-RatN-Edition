@@ -23,28 +23,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class RatUtils {
-
-    public static final Set<Class<? extends Entity>> PLAGUE_IMMUNE_ENTITIES_CLASSES;
-    static {
-        PLAGUE_IMMUNE_ENTITIES_CLASSES = Arrays.stream(RatsMod.CONFIG_OPTIONS.plagueImmuneEntities).map(registryName -> {
-            EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(registryName));
-            return entry == null ? null : entry.getEntityClass();
-        }).collect(Collectors.toSet());
-    }
 
     public static boolean isRatFood(ItemStack stack) {
         return (stack.getItem() instanceof ItemFood || isSeeds(stack) || stack.getItem() == Items.WHEAT) && stack.getItem() != RatsItemRegistry.RAW_RAT && stack.getItem() != RatsItemRegistry.COOKED_RAT;
