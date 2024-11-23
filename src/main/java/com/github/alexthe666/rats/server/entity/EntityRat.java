@@ -2656,6 +2656,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean isEntityInvulnerable(DamageSource source) {
+        if (source == DamageSource.CACTUS) // Make rat immune to cactus damage so he don't die while farming cactus
+            return true;
         if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON))) {
             return true;
         }
