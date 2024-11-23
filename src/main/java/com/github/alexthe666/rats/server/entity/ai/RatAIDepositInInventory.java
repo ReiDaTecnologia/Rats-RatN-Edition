@@ -34,6 +34,9 @@ public class RatAIDepositInInventory extends EntityAIBase {
     private int feedingTicks;
     private int breakingTime;
     private int previousBreakProgress;
+    private int stuckTimer;
+    private int stuckTimeOut;
+    private Vec3d prevPositionVector;
 
     public RatAIDepositInInventory(EntityRat entity) {
         super();
@@ -59,6 +62,7 @@ public class RatAIDepositInInventory extends EntityAIBase {
 
     private void resetTarget() {
         this.targetBlock = entity.depositPos;
+        prevPositionVector = this.entity.getPositionVector();
     }
 
     @Override
@@ -136,10 +140,20 @@ public class RatAIDepositInInventory extends EntityAIBase {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D);
                 double distance = this.entity.getDistance(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
+                stuckTimer++;
+                if (stuckTimer >= 20) // Check if the rat is stuck roughly every second
+                {
+                    if (prevPositionVector.distanceTo(this.entity.getPositionVector()) < 1) // Even when the rat is jumping up blocks it shouldn't return a number lower than 1 meaning the rat is probably stuck
+                        stuckTimeOut++; // 60 seconds (one minute) to avoid exploitation
+                    else
+                        stuckTimeOut = 0; // The rat need to be continuously stuck for 60 seconds
+                    prevPositionVector = this.entity.getPositionVector(); // Save the previous second's position vector to be compared with the current later. For some reason prevPos and lastTickPos have the same value as the current location so i had to save the previous location myself
+                    stuckTimer = 0; // Reset the stuck timer
+                }
                 if (distance < 2.5 && distance >= 1.86 && canSeeChest() && te instanceof IInventory) {
                     toggleChest((IInventory) te, true);
                 }
-                if (distance < 1.86 && canSeeChest()) {
+                if ((distance < 1.86 || stuckTimeOut >= 60) && canSeeChest()) { // Skip the distance check if the rat is stuck for 60 seconds
                     if (te instanceof IInventory) {
                         toggleChest((IInventory) te, false);
                     }
@@ -148,6 +162,7 @@ public class RatAIDepositInInventory extends EntityAIBase {
                     if (duplicate.getCount() != ItemHandlerHelper.insertItem(handler, duplicate, true).getCount()) {
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, ItemHandlerHelper.insertItem(handler, duplicate, false));
                         this.targetBlock = null;
+                        stuckTimeOut = 0; // Reset the time out timer back to 0
                         this.resetTask();
                     }
 
