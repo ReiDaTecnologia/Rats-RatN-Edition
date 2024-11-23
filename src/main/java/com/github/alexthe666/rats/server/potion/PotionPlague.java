@@ -1,11 +1,9 @@
 package com.github.alexthe666.rats.server.potion;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.RatUtils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -25,13 +23,6 @@ public class PotionPlague extends Potion {
 
     @Override
     public void performEffect(@Nonnull EntityLivingBase entityLivingBaseIn, int amplifier) {
-
-        for (Class<? extends Entity> entClass : RatUtils.PLAGUE_IMMUNE_ENTITIES_CLASSES)
-        {
-            if (entClass != null && entClass.isInstance(entityLivingBaseIn))
-                return;
-        }
-
         if (amplifier == 2) {
             if (entityLivingBaseIn.ticksExisted % (RatsMod.CONFIG_OPTIONS.plagueStage3DamageFrequency * 20) == 0) {
                 entityLivingBaseIn.attackEntityFrom(RatsMod.plagueDamage, RatsMod.CONFIG_OPTIONS.plagueStage3Damage);
